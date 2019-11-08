@@ -13,6 +13,7 @@ gem 'devise_token_auth'
 gem 'pundit', '~> 1.1'
 gem 'stripe-rails'
 gem 'aws-sdk-s3'
+gem 'mini_magick'
 
 group :development, :test do
   gem 'pry-rails'
