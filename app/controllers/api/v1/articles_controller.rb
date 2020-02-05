@@ -12,36 +12,36 @@ class Api::V1::ArticlesController < ApplicationController
   end
 
   def create
-    authorize Article.create
+    # authorize Article.create
     @article = Article.create(article_params.merge!(journalist: current_user))
-    attach_image
-    if @article.persisted? && @article.image.attached?
+    # attach_image (&& @article.image.attached? (below))
+    if @article.persisted? 
       render json: {message: 'Article was successfully created'}
     else 
       render_error_message(@article.errors.first.to_sentence, 400)
     end   
   end
 
-  def show
-    if @article = Article.find(params[:id])
-      authorize @article
-      render json: @article, serializer: Articles::IndexSerializer
-    else
-      render_error_message('The article could not be found', 404)
-    end
-  end
+#   def show
+#     if @article = Article.find(params[:id])
+#       authorize @article
+#       render json: @article, serializer: Articles::IndexSerializer
+#     else
+#       render_error_message('The article could not be found', 404)
+#     end
+#   end
 
-  def update
-    @article = Article.find(params[:id])
-    authorize @article
+#   def update
+#     @article = Article.find(params[:id])
+#     authorize @article
 
-    attach_image
-    if @article.update(article_params) && @article.image.attached?
-      render json: {message: 'Edit of article went well'}, status: 200
-    else
-      render_error_message(@article.errors.first.to_sentence, 400)
-    end
-  end
+#     attach_image
+#     if @article.update(article_params) && @article.image.attached?
+#       render json: {message: 'Edit of article went well'}, status: 200
+#     else
+#       render_error_message(@article.errors.first.to_sentence, 400)
+#     end
+#   end
   
   private
   def article_params
@@ -52,9 +52,9 @@ class Api::V1::ArticlesController < ApplicationController
     render json: { error_message: message }, status: status
   end
 
-  def attach_image
-    if params['image'] && params['image'].present?
-      DecodeService.attach_image(params['image'], @article.image) 
-    end
-  end
+#   def attach_image
+#     if params['image'] && params['image'].present?
+#       DecodeService.attach_image(params['image'], @article.image) 
+#     end
+#   end
 end
